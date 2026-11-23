@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using KaizenTracker.Api.Data;
+using KaizenTracker.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Connection string 'Default' is not configured.");
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(connectionString)); // Scoped lifetime
+
+builder.Services.AddSingleton(TimeProvider.System);                // stateless, safe to share
+builder.Services.AddScoped<IProposalService, ProposalService>();   // Scoped because it uses AppDbContext
 
 builder.Services
     .AddControllers()

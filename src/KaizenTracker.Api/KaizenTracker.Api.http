@@ -19,10 +19,37 @@ GET {{host}}/api/proposals?status=Submitted
 ### Get one
 GET {{host}}/api/proposals/1
 
-### Change status
+### Status workflow: Submitted → UnderReview → Approved → Completed (or → Rejected).
+### Replace 1 with the id returned by "Create a proposal".
+
+### Skipping approval is rejected with 409 Conflict
+PATCH {{host}}/api/proposals/1/status
+Content-Type: application/json
+
+{
+  "status": "Completed"
+}
+
+### Move to review
+PATCH {{host}}/api/proposals/1/status
+Content-Type: application/json
+
+{
+  "status": "UnderReview"
+}
+
+### Approve
 PATCH {{host}}/api/proposals/1/status
 Content-Type: application/json
 
 {
   "status": "Approved"
+}
+
+### Complete (sets completedAt)
+PATCH {{host}}/api/proposals/1/status
+Content-Type: application/json
+
+{
+  "status": "Completed"
 }
