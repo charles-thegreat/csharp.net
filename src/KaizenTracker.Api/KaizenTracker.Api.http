@@ -1,0 +1,28 @@
+@host = http://localhost:5031
+
+### Create a proposal
+POST {{host}}/api/proposals
+Content-Type: application/json
+
+{
+  "title": "Shadow board for torque wrenches",
+  "description": "Operators spend ~5 min per shift searching for the right wrench.",
+  "area": "Assembly"
+}
+
+### List all proposals
+GET {{host}}/api/proposals
+
+### List by status
+GET {{host}}/api/proposals?status=Submitted
+
+### Get one
+GET {{host}}/api/proposals/1
+
+### Change status
+PATCH {{host}}/api/proposals/1/status
+Content-Type: application/json
+
+{
+  "status": "Approved"
+}
