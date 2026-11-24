@@ -2,4 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/KaizenTracker.Api/KaizenTracker.Api.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/KaizenTracker.Api.Tests/KaizenTracker.Api.Tests.csproj" />
+  </Folder>
 </Solution>
