@@ -11,10 +11,20 @@ var builder = WebApplication.CreateBuilder(args);
 // in a deployed environment it would come from an env var: ConnectionStrings__Default.
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Connection string 'Default' is not configured.");
-builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(connectionString)); // Scoped lifetime
+builder.Services.AddDbContext<AppDbContext>(o =>
+{
+    o.UseSqlServer(connectionString);
+    if (builder.Environment.IsDevelopment())
+    {
+        // Sample data, applied after migrations by `dotnet ef database update`.
+        o.UseSeeding((ctx, _) => DevSeedData.Seed(ctx))
+         .UseAsyncSeeding((ctx, _, ct) => DevSeedData.SeedAsync(ctx, ct));
+    }
+}); // Scoped lifetime
 
 builder.Services.AddSingleton(TimeProvider.System);                // stateless, safe to share
 builder.Services.AddScoped<IProposalService, ProposalService>();   // Scoped because it uses AppDbContext
+builder.Services.AddScoped<IMetricsService, MetricsService>();
 
 builder.Services
     .AddControllers()

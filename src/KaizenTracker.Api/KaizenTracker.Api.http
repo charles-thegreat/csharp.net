@@ -53,3 +53,6 @@ Content-Type: application/json
 {
   "status": "Completed"
 }
+
+### Lead-time metrics: average days from submission to completion, by area
+GET {{host}}/api/metrics/lead-time
