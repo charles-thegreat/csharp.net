@@ -24,6 +24,11 @@ public class ProposalsController(IProposalService proposals) : ControllerBase
         return proposal is null ? NotFound() : proposal;
     }
 
+    // GET api/proposals/workflow -> { "Submitted": ["UnderReview", "Rejected"], ... }
+    [HttpGet("workflow")]
+    public ActionResult<IReadOnlyDictionary<ProposalStatus, ProposalStatus[]>> Workflow() =>
+        Ok(ProposalWorkflow.Transitions);
+
     // POST api/proposals
     [HttpPost]
     public async Task<ActionResult<Proposal>> Create(CreateProposalRequest request, CancellationToken ct)

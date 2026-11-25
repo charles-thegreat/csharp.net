@@ -20,6 +20,10 @@ public static class ProposalWorkflow
         [ProposalStatus.Completed] = [],
     };
 
+    // The whole table, served to the frontend so it shows only the valid status buttons
+    // without duplicating the rules in TypeScript.
+    public static IReadOnlyDictionary<ProposalStatus, ProposalStatus[]> Transitions => AllowedTransitions;
+
     public static IReadOnlyList<ProposalStatus> NextStatuses(ProposalStatus current) =>
         AllowedTransitions[current];
 
